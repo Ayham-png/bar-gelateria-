@@ -1,0 +1,1617 @@
+/* ──────────────────────────────────────────────
+   Bar Gelateria Venezia — full site
+   Built on the Cream hero design language:
+   pastel-pink page, red-orange & cream cards,
+   Fredoka 700 display + Poppins 400/500 body,
+   chunky offset-shadow pills, SVG wave divider.
+   ────────────────────────────────────────────── */
+
+:root {
+  /* Luxe palette — same slots, premium hues:
+       brand       → deep wine                    (was bright terracotta)
+       accent      → champagne gold               (was bright teal cyan)
+       Speisekarte → soft champagne taupe         (was pale blue)
+       type        → warm charcoal                (was near-black)
+     Page is a warm champagne ivory; cream is a refined ivory. */
+  --pink:        #15100C;  /* page frame: deep coffee black — cards float on it */
+  --pink-deep:   #2A1F18;
+  --menu-blue:        #E0D4BA;  /* speisekarte room: champagne taupe */
+  --menu-blue-deep:   #B8A37E;
+  --red:         #6E2317;  /* primary brand — deep wine */
+  --red-deep:    #3E120A;
+  --red-soft:    #9C3D2C;
+  --cream:       #F6ECCF;  /* refined ivory */
+  --cream-deep:  #E8D5A4;
+  --yellow:      #C9A24C;  /* muted antique gold */
+  --teal:        #D67B5C;  /* italic accent — warm coral (from ref) */
+  --teal-deep:   #A8553A;  /* deeper coral for small text */
+  --teal-soft:   #E69C81;
+  --ink:         #1C1410;  /* warm charcoal */
+  --ink-soft:    #4A382C;
+  --white:       #FFFFFF;
+  --strawberry:  #E8CCC4;  /* muted dusty rose */
+  --pistachio:   #BCC9A0;  /* muted sage */
+  --lemon:       #E7D4A0;  /* muted honey */
+
+  --r-card:      10px;
+  --r-pill:      999px;
+
+  --font-d: 'Playfair Display', 'Times New Roman', serif;
+  --font-b: 'Inter', system-ui, sans-serif;
+
+  --maxw: 1280px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+/* Color-typed custom properties so the scroll-driven bg animation
+   actually tweens between colors instead of stepping. */
+@property --bg-base   { syntax: '<color>'; inherits: false; initial-value: #15100C; }
+@property --glow-warm { syntax: '<color>'; inherits: false; initial-value: rgba(228, 122, 53, 0.18); }
+@property --glow-cool { syntax: '<color>'; inherits: false; initial-value: rgba(110, 35, 23, 0.30); }
+
+body {
+  font-family: var(--font-b);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse 90% 55% at 82% 18%, var(--glow-warm), transparent 62%),
+    radial-gradient(ellipse 90% 55% at 18% 78%, var(--glow-cool), transparent 62%),
+    var(--bg-base);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+button { font: inherit; cursor: pointer; border: 0; background: none; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; padding: 0; margin: 0; }
+h1, h2, h3, h4, h5 { margin: 0; font-family: var(--font-d); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; }
+
+/* ────────── PAGE / CARD frame ────────── */
+.page {
+  display: grid;
+  gap: clamp(14px, 1.6vw, 22px);
+  padding: clamp(14px, 2.4vw, 28px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow:
+    0 30px 60px -25px rgba(120,40,20,0.30),
+    0 8px 20px -10px rgba(120,40,20,0.15);
+}
+
+.card--hero {
+  aspect-ratio: 16 / 11;       /* slightly taller so the card-foot has room */
+}
+.card--cream { background: var(--cream); color: var(--ink); }
+.card--red   {
+  background:
+    radial-gradient(ellipse 70% 60% at 88% 18%, rgba(214, 123, 92, 0.18), transparent 60%),
+    radial-gradient(ellipse 60% 70% at 8% 100%, rgba(110, 35, 23, 0.32), transparent 55%),
+    #261611;
+  color: var(--white);
+}
+
+@media (max-width: 920px) {
+  .card--hero { aspect-ratio: auto; min-height: 900px; }
+}
+
+/* Hero color panes + wave (unchanged from Cream) */
+.pane { position: absolute; left: 0; right: 0; z-index: 0; }
+.pane--top {
+  top: 0; height: 70%;
+  background:
+    radial-gradient(ellipse 70% 60% at 88% 18%, rgba(214, 123, 92, 0.18), transparent 60%),
+    radial-gradient(ellipse 60% 70% at 8% 100%, rgba(110, 35, 23, 0.30), transparent 55%),
+    #261611;
+}
+
+.pane--bottom {
+  bottom: 0; height: 40%;
+  background: var(--cream);
+  /* Smooth elliptical top edge — scales cleanly at any width,
+     unlike the stretchable SVG wave it replaces. */
+  clip-path: ellipse(130% 100% at 50% 100%);
+}
+.card-wave { display: none; }
+
+.card-content {
+  position: absolute; inset: 0; z-index: 3;
+  display: grid; grid-template-rows: auto 1fr auto;
+  /* Bottom padding bumped so the 52px round arrow buttons sit well clear of
+     the card's rounded bottom corner (border-radius 36px would otherwise
+     clip them under overflow:hidden). */
+  padding: clamp(20px, 2.5vw, 32px) clamp(24px, 4vw, 56px) clamp(72px, 8vw, 96px);
+  gap: clamp(20px, 3vw, 36px);
+}
+
+/* ────────── PILL buttons & links ────────── */
+.cta {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 14px 26px;
+  border: 1px solid rgba(255, 248, 220, 0.12);
+  border-radius: var(--r-pill);
+  font-family: var(--font-b); font-weight: 500; font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--red);
+  box-shadow: 0 8px 24px -8px rgba(110, 35, 23, 0.45);
+  transition: background .35s ease, transform .35s ease, box-shadow .35s ease;
+}
+.cta::after {
+  content: '→';
+  font-family: var(--font-b);
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0;
+  transition: transform .35s ease;
+}
+.cta:hover  {
+  background: #5A1810;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px -8px rgba(110, 35, 23, 0.55);
+}
+.cta:hover::after { transform: translateX(4px); }
+.cta:active { transform: translateY(0); }
+.cta--light {
+  background: var(--red); color: var(--cream); border-color: rgba(255, 248, 220, 0.16);
+  box-shadow: 0 8px 24px -8px rgba(110, 35, 23, 0.45);
+}
+.cta--light:hover { background: #5A1810; }
+.cta--big { padding: 16px 32px; font-size: 12px; }
+
+.cta-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-d); font-weight: 600; font-size: 17px;
+  color: var(--cream);
+  border-bottom: 1.5px solid currentColor;
+  padding: 12px 6px;
+  transition: opacity .2s ease;
+}
+.cta-link:hover { opacity: .8; }
+.cta-link svg { width: 18px; height: 18px; }
+
+.mini-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 10px 18px;
+  background: var(--teal-deep);
+  color: var(--cream);
+  border-radius: var(--r-pill);
+  font-family: var(--font-d); font-weight: 600; font-size: 13.5px;
+  transition: background .2s, transform .25s cubic-bezier(.16, 1, .3, 1);
+}
+.mini-pill:hover { background: var(--ink); transform: translateY(-1px); }
+.mini-pill:active { transform: scale(.96); }
+
+/* ────────── NAV (inside hero) ────────── */
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; color: var(--white);
+}
+.logo {
+  display: inline-flex; align-items: center; gap: 12px;
+  color: var(--white);
+}
+.logo--dark { color: var(--cream); }
+.logo__img {
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--cream);
+  box-shadow: 0 3px 10px rgba(0,0,0,.22);
+  flex-shrink: 0;
+}
+.logo__img--lg { width: 88px; height: 88px; }
+.logo__word {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-d); font-weight: 600;
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.logo__word small {
+  font-family: var(--font-b); font-weight: 500;
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: currentColor; opacity: .85;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.nav-links { display: flex; align-items: center; gap: clamp(18px, 2.2vw, 32px); }
+.nav-link {
+  font-family: var(--font-b); font-weight: 500; font-size: clamp(14px, 1.05vw, 16px);
+  color: var(--white); padding: 12px 8px;
+  transition: opacity .2s ease;
+}
+.nav-link:hover { opacity: .8; }
+.nav-link--active {
+  background: var(--white); color: var(--teal-deep);
+  padding: 14px 26px; border-radius: var(--r-pill);
+  font-weight: 600;
+}
+.nav-link--active:hover { opacity: 1; }
+
+.nav-actions { display: flex; gap: 10px; align-items: center; }
+.icon-btn {
+  display: grid; place-items: center;
+  width: 48px; height: 48px;
+  border: 1.6px solid rgba(255,255,255,.85);
+  border-radius: 50%;
+  color: var(--white);
+  transition: background .2s ease, color .2s ease, transform .25s cubic-bezier(.16, 1, .3, 1);
+}
+.icon-btn svg { width: 20px; height: 20px; }
+.icon-btn:hover { background: var(--white); color: var(--red); }
+.icon-btn:active { transform: scale(.94); }
+
+@media (max-width: 820px) { .nav-links { display: none; } }
+
+/* ────────── HERO copy + side icons ────────── */
+.hero { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 24px; padding-top: clamp(12px, 2vw, 28px); }
+.hero__copy { color: var(--white); }
+.hero__eyebrow {
+  font-family: var(--font-b); font-weight: 600; font-size: 13px;
+  letter-spacing: .02em; margin: 0 0 14px;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+.hero__title {
+  font-family: var(--font-d); font-weight: 700;
+  font-size: clamp(42px, 6.2vw, 86px);
+  line-height: 0.95; letter-spacing: -0.025em;
+  margin: 0 0 12px;
+  /* Lift the display headline off the orange — a soft drop + a tighter
+     inner edge so the letterforms read crisply on any photo behind. */
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.22),
+    0 8px 24px rgba(0, 0, 0, 0.18);
+  text-wrap: balance;
+}
+.hero__accent { color: var(--cream); }
+
+.hero__sub {
+  font-family: var(--font-b); font-weight: 600;
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.45; max-width: 32ch;
+  margin: 0 0 28px;
+  color: var(--white);
+  /* Strong layered shadow keeps the white text readable on the orange
+     and across the wave seam below it. */
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    0 6px 18px rgba(0, 0, 0, 0.22);
+  color: rgba(255,255,255,.95);
+}
+
+.hero__side { justify-self: end; }
+.ingredient-icons { display: flex; gap: 10px; }
+.ingredient-icons li {
+  width: 36px; height: 36px;
+  border: 1.3px solid rgba(255,255,255,.8);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--white);
+}
+.ingredient-icons svg { width: 16px; height: 16px; }
+
+/* ────────── BOTTOM (cream zone of hero card) ────────── */
+.card-foot {
+  position: relative; z-index: 4;
+  display: grid;
+  /* Proof on the left, controls dead-centre, empty 3rd column balances the
+     row so the carousel never drifts off-centre regardless of proof width. */
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(16px, 2vw, 28px);
+  color: var(--ink);
+  padding-top: clamp(12px, 2vw, 32px);
+}
+.proof { grid-column: 1; justify-self: start; min-width: 0; }
+
+.carousel-controls {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.proof { display: flex; align-items: center; gap: 14px; }
+.proof__avatar { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+.proof__avatar svg { width: 100%; height: 100%; display: block; }
+.proof__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.proof__top {
+  font-family: var(--font-b); font-weight: 500; font-size: 14px;
+  color: var(--ink-soft); margin: 0;
+  white-space: nowrap;        /* keep "169 Bewertungen" on one line */
+}
+.proof__bot { font-family: var(--font-d); font-weight: 500; font-size: 16px; margin: 0; color: var(--ink); white-space: nowrap; }
+.proof__bot span { color: var(--teal-deep); font-weight: 600; }
+.proof__link { display: inline-grid; place-items: center; width: 22px; height: 22px; color: var(--teal-deep); margin-top: 4px; }
+.proof__link svg { width: 18px; height: 18px; }
+
+.round-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  background: var(--white);
+  display: grid; place-items: center;
+  box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.2);
+  transition: background .2s, color .2s, border-color .2s, transform .25s cubic-bezier(.16, 1, .3, 1);
+}
+.round-btn:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.round-btn:active { transform: scale(.94); }
+.round-btn svg { width: 22px; height: 22px; stroke-width: 2.2; }
+
+.dots { display: flex; gap: 10px; justify-content: center; padding: 0 4px; align-items: center; }
+.dot {
+  position: relative;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: rgba(26,26,26,.2);
+  transition: background .2s, transform .2s;
+}
+/* Invisible padding around each dot expands the tap target to ~32px without
+   moving the dots visually — easier to thumb-tap without crowding the row. */
+.dot::before {
+  content: '';
+  position: absolute; inset: -9px;
+  border-radius: 50%;
+}
+.dot--active { background: var(--ink); transform: scale(1.18); }
+
+/* ────────── HERO floating products ────────── */
+.cup {
+  position: absolute; z-index: 5; pointer-events: none;
+  filter: drop-shadow(0 30px 30px rgba(120,40,20,.35));
+  animation: float-cup 6.5s ease-in-out infinite;
+  transition: opacity .26s ease;
+}
+.cup--hero { width: 36%; max-width: 460px; right: 28%; bottom: 14%; transform-origin: center bottom; }
+.cup--mid  { width: 21%; max-width: 260px; right: 10%; bottom: 26%; animation-delay: .8s;  animation-duration: 7s; }
+.cup--bg   { width: 10%; max-width: 120px; right: 2%;  bottom: 38%; animation-delay: 1.6s; animation-duration: 8s; }
+
+@keyframes float-cup {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50%      { transform: translateY(-10px) rotate(-1.2deg); }
+}
+/* Centering variant — preserves translateX(-50%) so the cup stays centered
+   while floating. Used at tablet & mobile breakpoints where the cup is
+   anchored by left:50% instead of by its right edge. */
+@keyframes float-cup-center {
+  0%, 100% { transform: translate(-50%, 0) rotate(0); }
+  50%      { transform: translate(-50%, -10px) rotate(-1.2deg); }
+}
+
+.straw {
+  position: absolute; z-index: 6; pointer-events: none;
+  filter: drop-shadow(0 8px 8px rgba(120,40,20,.25));
+  animation: float-straw 5s ease-in-out infinite;
+  transition: opacity .26s ease;
+}
+.straw--1 { width: 5.5%; max-width: 70px; right: 56%; bottom: 22%; rotate: -16deg; animation-delay: .3s; }
+.straw--2 { width: 6.5%; max-width: 80px; right: 20%; bottom: 16%; rotate: 18deg;  animation-delay: 1.2s; }
+@keyframes float-straw {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* Mid-swap state: cups + floaters fade out before src changes */
+.cup.is-swapping, .straw.is-swapping { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cup, .straw, .ticker__track { animation: none; }
+  .cup.is-swapping, .straw.is-swapping { opacity: 1; } /* honour reduced motion: skip crossfade */
+}
+
+/* ────────── TICKER ────────── */
+.ticker {
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  padding: 14px 0;
+  border: 0;
+}
+.ticker__track {
+  display: flex; gap: 2.6rem;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+  font-family: var(--font-d);
+  font-weight: 600; font-size: 16px;
+  letter-spacing: .01em;
+}
+.ticker__track span { white-space: nowrap; }
+.ticker:hover .ticker__track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ────────── Section heads / titles (shared) ────────── */
+.section-head { padding: clamp(36px, 5vw, 56px) clamp(24px, 4vw, 56px) 0; max-width: 880px; }
+.section-head--center { text-align: center; max-width: 720px; margin: 0 auto; }
+.kicker {
+  display: inline-block;
+  font-family: var(--font-b); font-weight: 600;
+  font-size: 13px; letter-spacing: .02em;
+  color: var(--teal-deep); margin: 0 0 14px;
+}
+.kicker--light { color: var(--cream-deep); }
+.section-title {
+  font-family: var(--font-d); font-weight: 700;
+  font-size: clamp(32px, 4.2vw, 56px);
+  letter-spacing: -0.025em; line-height: 1;
+  margin: 0;
+  text-wrap: balance;
+}
+.section-title--light { color: var(--cream); }
+.section-title__accent { color: var(--teal-deep); }
+.section-title--light .section-title__accent { color: var(--cream-deep); }
+
+/* ────────── KLASSIKER ────────── */
+#klassiker { padding-bottom: clamp(36px, 5vw, 56px); }
+.prod-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: clamp(14px, 1.6vw, 20px);
+  padding: clamp(28px, 4vw, 44px) clamp(20px, 3vw, 56px) 0;
+}
+.prod {
+  background: var(--white);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s;
+  border: 1.5px solid rgba(0,0,0,.03);
+}
+.prod:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -20px rgba(120,40,20,.3); }
+.prod__media {
+  position: relative;
+  height: 220px;
+  display: grid; place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+.prod__media::after {
+  content: '';
+  position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%);
+  width: 80%; height: 14px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.15);
+  filter: blur(8px);
+  z-index: 1;
+}
+.prod__media img {
+  position: relative; z-index: 2;
+  height: 88%; width: auto;
+  filter: drop-shadow(0 14px 18px rgba(0,0,0,.18));
+  transition: transform .35s cubic-bezier(.16,1,.3,1);
+}
+.prod:hover .prod__media img { transform: translateY(-6px) rotate(-2deg); }
+
+.prod__media--pink       { background: radial-gradient(circle at 50% 40%, #FDDDE3, var(--strawberry)); }
+.prod__media--green      { background: radial-gradient(circle at 50% 40%, #DEEDC8, var(--pistachio)); }
+.prod__media--yellow     { background: radial-gradient(circle at 50% 40%, #FFF1C6, var(--lemon)); }
+.prod__media--cream      { background: var(--cream-deep); }
+.prod__media--cream-warm { background: radial-gradient(circle at 50% 40%, #FFF1D9, #F7C998); }
+.prod__media--brown      { background: radial-gradient(circle at 50% 40%, #C99570, #8C5A38); }
+
+.prod__meta { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 6px; }
+.prod__name { font-family: var(--font-d); font-weight: 600; font-size: 18px; letter-spacing: -.01em; color: var(--ink); }
+.prod__desc { font-size: 13px; color: var(--ink-soft); margin: 0; line-height: 1.45; min-height: 2.9em; }
+.prod__row  { display: flex; align-items: center; margin-top: 6px; }
+.prod__price { font-family: var(--font-d); font-weight: 600; font-size: 18px; color: var(--teal-deep); }
+
+.prod--feature { grid-column: span 1; }
+.prod--feature .prod__media { background: radial-gradient(circle at 50% 40%, #DEEDC8, #9CC97C); }
+.prod__tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--red);
+  color: var(--cream);
+  font-family: var(--font-b);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+/* ────────── SPEISEKARTE (PDF gallery + lightbox) ────────── */
+/* The menu section gets the pale blue from the printed Speisekarte so the
+   blue feels deliberate — it lives where the menu lives — not as an
+   overall site tint. */
+.speisekarte { background: var(--menu-blue); }
+/* Speisekarte uses the global accent (coral) like every other section */
+.menu-page { background: var(--cream); }
+.menu-page__num {
+  background: rgba(255, 248, 220, 0.92);
+  color: var(--red);
+}
+
+.menu-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 1100px;
+  margin: clamp(28px, 4vw, 44px) auto 0;
+  padding: 0;
+  list-style: none;
+}
+.menu-gallery li { display: contents; }
+.menu-gallery__wide { /* landscape spreads span 2 columns */ }
+.menu-gallery > li.menu-gallery__wide > button { grid-column: span 2; aspect-ratio: 3/2; }
+.menu-gallery > li:not(.menu-gallery__wide) > button { aspect-ratio: 3/4; }
+
+.menu-page {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: var(--white);
+  overflow: hidden;
+  cursor: zoom-in;
+  box-shadow: 0 12px 24px -18px rgba(120, 40, 20, 0.35);
+  transition:
+    transform 0.4s cubic-bezier(.16, 1, .3, 1),
+    box-shadow 0.4s cubic-bezier(.16, 1, .3, 1);
+}
+.menu-page:hover {
+  transform: translateY(-4px) rotate(-0.5deg);
+  box-shadow: 0 22px 38px -22px rgba(120, 40, 20, 0.45);
+}
+.menu-page:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+}
+.menu-page img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.menu-page__num {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  padding: 4px 10px;
+  background: rgba(255, 248, 220, 0.92);
+  color: var(--teal-deep);
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: .04em;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.menu-intro {
+  margin: 18px auto 0;
+  max-width: 560px;
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.menu-foot {
+  max-width: 720px;
+  margin: clamp(28px, 4vw, 44px) auto 0;
+  padding: 18px 24px;
+  background: var(--white);
+  border-radius: 10px;
+  border: 1px dashed rgba(168, 85, 58, 0.35);
+  font-size: 13.5px;
+  text-align: center;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+@media (max-width: 880px) {
+  .menu-gallery { grid-template-columns: repeat(2, 1fr); }
+  .menu-gallery > li.menu-gallery__wide > button { grid-column: span 2; }
+}
+@media (max-width: 520px) {
+  .menu-gallery { grid-template-columns: 1fr; gap: 12px; }
+  .menu-gallery > li > button,
+  .menu-gallery > li.menu-gallery__wide > button { grid-column: span 1; }
+  .menu-gallery > li.menu-gallery__wide > button { aspect-ratio: 3/2; }
+}
+
+/* ────────── Lightbox dialog ────────── */
+/* Image-first layout: the menu page fills nearly the whole viewport.
+   Arrows, close button, and counter overlay on top of the image. */
+.lightbox {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  inset: 0;
+  overflow: visible;
+}
+.lightbox::backdrop {
+  background: rgba(26, 17, 11, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.lightbox[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.lightbox__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+.lightbox__img {
+  display: block;
+  margin: auto;
+  /* Image gets the full upper area. Controls live in a bar at the
+     bottom (counter + prev + next), so the image and the arrows
+     never overlap. */
+  max-width: 94vw;
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  box-shadow:
+    0 28px 50px -16px rgba(0, 0, 0, 0.55),
+    0 6px 14px -6px rgba(0, 0, 0, 0.3);
+  background: var(--cream);
+  animation: lightbox-pop .35s cubic-bezier(.16, 1, .3, 1) backwards;
+}
+@keyframes lightbox-pop {
+  from { opacity: 0; transform: scale(.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Controls — bigger + thumb-friendly tap targets */
+.lightbox__close {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.55);
+  transition: transform .2s ease, background .2s ease;
+}
+.lightbox__close:hover { background: var(--white); transform: rotate(90deg); }
+.lightbox__close svg { width: 28px; height: 28px; stroke-width: 2.4; }
+
+/* Bottom control bar: [ prev ] [ counter ] [ next ] — clear of the image */
+.lightbox__nav,
+.lightbox__counter {
+  position: fixed;
+  bottom: 24px;
+  z-index: 2;
+}
+.lightbox__nav {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(255, 248, 220, 0.92);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 14px 30px -8px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background .2s ease, transform .2s ease;
+}
+.lightbox__nav:hover {
+  background: var(--white);
+  transform: scale(1.06);
+}
+.lightbox__nav svg { width: 32px; height: 32px; stroke-width: 2.4; }
+.lightbox__nav--prev { left: calc(50% - 124px); }   /* 50% - half(counter+gap+arrow) */
+.lightbox__nav--next { left: calc(50% + 52px); }
+
+.lightbox__counter {
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-d);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--cream);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 12px 22px;
+  border-radius: 999px;
+  letter-spacing: .04em;
+  /* Counter sits at the EXACT centre; arrows are anchored relative to it
+     so the whole row stays balanced regardless of viewport size. */
+}
+.lightbox__current { color: var(--teal); }
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox__img { animation: none; }
+  .menu-page { transition: none; }
+}
+
+/* ────────── STORY ────────── */
+.story-card {
+  padding: clamp(36px, 5vw, 64px) clamp(24px, 4vw, 56px);
+  display: grid; grid-template-columns: 1.2fr .8fr;
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+}
+.story-card__copy { max-width: 540px; }
+.story-card__body {
+  font-family: var(--font-b); font-weight: 400; font-size: 16px;
+  line-height: 1.65; color: rgba(255,255,255,.92);
+  margin: 18px 0 28px;
+}
+.story-card__art { position: relative; display: grid; place-items: center; height: 320px; }
+.story-card__cup {
+  width: 70%; max-width: 280px;
+  filter: drop-shadow(0 30px 30px rgba(0,0,0,.4));
+  animation: float-cup 7s ease-in-out infinite;
+}
+.story-card__berry {
+  position: absolute; bottom: 8%; left: 16%;
+  width: 55px;
+  rotate: -22deg;
+  filter: drop-shadow(0 10px 10px rgba(0,0,0,.3));
+  animation: float-straw 6s ease-in-out infinite;
+}
+@media (max-width: 760px) {
+  .story-card { grid-template-columns: 1fr; }
+  .story-card__art { height: 260px; }
+}
+
+/* ────────── GALERIE — luxe editorial grid ────────── */
+.gallery-card {
+  position: relative;
+  padding: clamp(56px, 7vw, 96px) clamp(28px, 4vw, 56px) clamp(64px, 7vw, 96px);
+  background:
+    radial-gradient(ellipse 70% 60% at 88% 18%, rgba(214, 123, 92, 0.20), transparent 60%),
+    radial-gradient(ellipse 60% 70% at 8% 100%, rgba(110, 35, 23, 0.32), transparent 55%),
+    #261611;
+  background-size: auto;
+  color: var(--cream);
+  overflow: hidden;
+}
+.gallery-card .kicker { color: var(--teal); }
+.gallery-card .kicker::before,
+.gallery-card .kicker::after { background: var(--teal); }
+.gallery-card .section-title { color: var(--cream); }
+.gallery-card .section-title__accent { color: var(--teal); }
+
+/* Wall becomes a clean symmetric 3-column grid */
+.polaroid-wall {
+  position: relative;
+  width: 100%;
+  aspect-ratio: auto;
+  max-height: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 2.4vw, 32px);
+  max-width: 1080px;
+  margin: clamp(40px, 5vw, 64px) auto 0;
+}
+
+/* Washi tape is too playful for luxe — gone */
+.polaroid-wall__tape { display: none; }
+
+/* Refined frames — dark tinted card with a fine champagne-gold border */
+.polaroid {
+  position: static;
+  width: 100% !important;
+  margin: 0;
+  padding: 14px 14px 56px;
+  background: rgba(255, 248, 220, 0.03);
+  border: 1px solid rgba(184, 146, 74, 0.30);
+  box-shadow: 0 14px 36px -18px rgba(0, 0, 0, 0.55);
+  transform: none !important;
+  rotate: 0deg !important;
+  cursor: pointer;
+  transition:
+    transform .5s ease,
+    border-color .5s ease,
+    box-shadow .5s ease;
+  z-index: 1;
+}
+.polaroid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;             /* taller editorial format */
+  object-fit: cover;
+  background: rgba(255, 248, 220, 0.05);
+  border-radius: 0;
+  filter: saturate(1.04) contrast(1.02);
+}
+.polaroid figcaption {
+  position: absolute;
+  bottom: 18px; left: 0; right: 0;
+  text-align: center;
+  font-family: var(--font-d); font-style: italic;
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+  line-height: 1;
+}
+.polaroid figcaption::before {
+  content: '';
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--teal);
+  margin: 0 auto 12px;
+}
+
+/* Hover: gold border brightens, frame lifts subtly */
+.polaroid:hover,
+.polaroid:focus-within {
+  transform: translateY(-4px) !important;
+  border-color: var(--teal);
+  box-shadow: 0 22px 44px -18px rgba(0, 0, 0, 0.7);
+  z-index: 2;
+  transition:
+    transform .5s ease,
+    border-color .5s ease,
+    box-shadow .5s ease;
+}
+
+/* Reset the old scatter coordinates */
+.polaroid--1, .polaroid--2, .polaroid--3,
+.polaroid--4, .polaroid--5, .polaroid--6 {
+  top: auto; left: auto;
+  width: auto;
+  transform: none;
+  rotate: 0deg;
+}
+
+.gallery-card__foot {
+  margin: clamp(40px, 5vw, 64px) auto 0;
+  text-align: center;
+  font-family: var(--font-d); font-style: italic;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  color: rgba(246, 236, 207, 0.65);
+}
+
+@media (max-width: 720px) {
+  .polaroid-wall { grid-template-columns: 1fr 1fr; }
+}
+
+/* ────────── ZAHLEN ────────── */
+.zahlen { padding-bottom: clamp(36px, 5vw, 56px); }
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: clamp(14px, 1.6vw, 24px);
+  padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 56px) 0;
+}
+.stat {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 28px 22px;
+  text-align: center;
+  display: flex; flex-direction: column; gap: 6px;
+  border: 1.5px solid rgba(0,0,0,.04);
+}
+.stat__num {
+  font-family: var(--font-d); font-weight: 700;
+  font-size: clamp(40px, 4.6vw, 64px);
+  color: var(--teal-deep); line-height: 1;
+  letter-spacing: -0.04em;
+}
+.stat__num small { font-size: .55em; color: var(--red); margin-left: 4px; vertical-align: 14%; }
+.stat__lbl { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+
+/* ────────── VISIT ────────── */
+.visit {
+  position: relative;
+  padding: clamp(40px, 5vw, 72px) clamp(24px, 4vw, 56px);
+  display: grid; grid-template-columns: 1.4fr .6fr;
+  gap: clamp(24px, 4vw, 48px);
+  align-items: center;
+  overflow: hidden;
+}
+.visit__copy { max-width: 540px; }
+.visit__lead {
+  font-family: var(--font-d); font-weight: 500; font-size: 20px;
+  margin: 18px 0 4px; color: var(--cream);
+}
+.visit__lead--dim { color: var(--cream-deep); opacity: .85; font-weight: 400; }
+.visit__cta-row { margin-top: 28px; display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
+.visit__cup {
+  width: 86%; max-width: 320px;
+  justify-self: center;
+  filter: drop-shadow(0 30px 30px rgba(0,0,0,.4));
+  animation: float-cup 8s ease-in-out infinite;
+}
+@media (max-width: 760px) {
+  .visit { grid-template-columns: 1fr; }
+  .visit__cup { max-width: 220px; }
+}
+
+/* ────────── FOOTER ────────── */
+.foot {
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: var(--r-card);
+  padding: clamp(36px, 4.5vw, 56px) clamp(24px, 4vw, 56px) clamp(28px, 3vw, 36px);
+}
+.foot__brand {
+  display: flex; align-items: center; gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255,248,220,.18);
+}
+.foot .logo { color: var(--cream); }
+.foot__tag { margin: 0; font-size: 13px; color: rgba(255,248,220,.7); }
+
+.foot__cols {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 24px;
+  padding: 28px 0;
+  border-bottom: 1px solid rgba(255,248,220,.18);
+}
+.foot__cols h5 {
+  font-family: var(--font-b); font-weight: 600; font-size: 12px;
+  letter-spacing: .04em;
+  color: var(--cream-deep);
+  margin: 0 0 10px;
+}
+.foot__cols p { font-size: 14px; color: rgba(255,248,220,.78); margin: 0; line-height: 1.6; }
+.foot__cols a:hover { color: var(--teal); }
+
+.foot__copy {
+  margin: 22px 0 0;
+  font-size: 12px; color: rgba(255,248,220,.55);
+  text-align: center;
+}
+.foot__copy a {
+  color: var(--cream-deep);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,248,220,.35);
+  transition: color .2s ease;
+}
+.foot__copy a:hover { color: var(--teal); }
+
+/* ────────── Responsive overrides ────────── */
+@media (max-width: 760px) {
+  /* On very narrow widths stack proof above the carousel controls
+     so neither group gets squashed sideways. */
+  .card-foot {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
+  .proof { grid-column: 1; justify-self: center; }
+  .carousel-controls { grid-column: 1; justify-self: center; }
+}
+
+@media (max-width: 920px) {
+  /* Hero cup is anchored from its CENTER. We replace the animation with
+     a centering variant so the keyframes don't blow away the translateX. */
+  .cup--hero {
+    width: 52%; max-width: 340px;
+    left: 50%;
+    right: auto;
+    bottom: 22%;
+    animation-name: float-cup-center;
+  }
+  .cup--mid  { width: 32%; max-width: 200px; right: 6%;  bottom: 30%; }
+  .cup--bg   { width: 16%; max-width: 100px; right: 3%;  bottom: 44%; }
+  .straw--1 { right: 72%; bottom: 22%; }
+  .straw--2 { right: 16%; bottom: 16%; }
+}
+
+@media (max-width: 600px) {
+  .page { padding: 12px; gap: 12px; }
+  .card--hero { min-height: 780px; }
+  .card-content { padding: 18px 20px 22px; gap: 18px; }
+  .hero { grid-template-columns: 1fr; gap: 8px; }
+  .hero__side, .ingredient-icons { display: none; }
+  .hero__title { font-size: clamp(38px, 12vw, 56px); }
+  /* Mobile: keep the same 3-cup layered composition as desktop — hero
+     centred-leftish, mid stepping up-right, bg in the far upper-right
+     corner. Just scaled smaller and lifted clear of the proof row. */
+  .card--hero { min-height: 880px; }
+  .cup--hero {
+    width: 46%; max-width: 200px;
+    right: 28%;
+    left: auto;
+    bottom: 18%;
+    animation-name: float-cup;          /* back to desktop float */
+  }
+  .cup--mid {
+    display: block;
+    width: 26%; max-width: 110px;
+    right: 6%;
+    bottom: 28%;
+  }
+  .cup--bg {
+    display: block;
+    width: 13%; max-width: 56px;
+    right: 0%;
+    bottom: 39%;
+  }
+  .straw--1 { right: 66%; bottom: 22%; width: 8%; max-width: 40px; }
+  .straw--2 { right: 22%; bottom: 13%; width: 9%; max-width: 46px; }
+  .icon-btn { width: 34px; height: 34px; }
+  .icon-btn svg { width: 14px; height: 14px; }
+  .section-head, .prod-grid, .stat-grid { padding-left: 20px; padding-right: 20px; }
+}
+
+/* ──────────────────────────────────────────────
+   Motion system
+   Rules (per impeccable):
+   • Content visible by default when JS isn't ready (no .js class).
+   • Each section gets its own treatment — no uniform reflex.
+   • Easing is expo.out (cubic-bezier(.16, 1, .3, 1)) — no bounce.
+   • prefers-reduced-motion fully honoured.
+   ────────────────────────────────────────────── */
+
+/* Hero entrance — one-shot on page load, no scroll trigger.
+   Backwards fill keeps the FROM state painted before the animation fires. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+html.js .hero__eyebrow,
+html.js .hero__title,
+html.js .hero__sub,
+html.js .hero__copy .cta {
+  animation: hero-rise 1s cubic-bezier(.16, 1, .3, 1) backwards;
+}
+html.js .hero__eyebrow   { animation-delay: 0.15s; }
+html.js .hero__title     { animation-delay: 0.25s; animation-duration: 1.1s; }
+html.js .hero__sub       { animation-delay: 0.42s; }
+html.js .hero__copy .cta { animation-delay: 0.58s; }
+
+/* Scroll reveals — varied direction per section, all expo.out */
+html.js .reveal {
+  opacity: 0;
+  will-change: opacity, transform;
+  transition:
+    opacity 0.9s cubic-bezier(.16, 1, .3, 1),
+    transform 0.9s cubic-bezier(.16, 1, .3, 1);
+}
+html.js .reveal--up    { transform: translateY(32px); }
+html.js .reveal--left  { transform: translateX(-42px); }
+html.js .reveal--right { transform: translateX(42px); }
+html.js .reveal--scale { transform: scale(.96); }
+
+html.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered children — each child gets a tiny offset & delay */
+html.js .reveal--stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.85s cubic-bezier(.16, 1, .3, 1),
+    transform 0.85s cubic-bezier(.16, 1, .3, 1);
+}
+html.js .reveal--stagger.is-in > * {
+  opacity: 1;
+  transform: none;
+}
+html.js .reveal--stagger.is-in > *:nth-child(1) { transition-delay: 0s;     }
+html.js .reveal--stagger.is-in > *:nth-child(2) { transition-delay: 0.07s;  }
+html.js .reveal--stagger.is-in > *:nth-child(3) { transition-delay: 0.14s;  }
+html.js .reveal--stagger.is-in > *:nth-child(4) { transition-delay: 0.21s;  }
+html.js .reveal--stagger.is-in > *:nth-child(5) { transition-delay: 0.28s;  }
+html.js .reveal--stagger.is-in > *:nth-child(6) { transition-delay: 0.35s;  }
+
+/* Dish hover micro-interaction — price warms to terracotta */
+.dish .dish__price { transition: color .25s ease; }
+.dish:hover .dish__price { color: var(--red); }
+
+/* Mini-pill — tactile press */
+.mini-pill { transition: background .2s ease, transform .25s cubic-bezier(.16, 1, .3, 1); }
+.mini-pill:active { transform: scale(.96); }
+
+/* Reduced motion — full stop */
+@media (prefers-reduced-motion: reduce) {
+  html.js .hero__eyebrow,
+  html.js .hero__title,
+  html.js .hero__sub,
+  html.js .hero__copy .cta { animation: none !important; }
+  html.js .reveal,
+  html.js .reveal--stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Scroll-driven interactive entrance — each card
+   lifts, scales, and tilts as it crosses the viewport,
+   tied directly to scroll position (not time). Scrolling
+   back reverses the animation. Uses translate/scale
+   properties (not transform) so existing rotations on
+   polaroids etc. are preserved. Hero card excluded so
+   it's always visible at page load.
+   ────────────────────────────────────────────── */
+
+@supports (animation-timeline: view()) {
+  /* Story / Visit cups: slow rotation drift instead of vertical translate */
+  .story-card__cup {
+    animation: cup-spin-drift linear;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+  .visit__cup {
+    animation: cup-spin-drift-reverse linear;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+  @keyframes cup-spin-drift {
+    from { rotate: -10deg; }
+    to   { rotate:  10deg; }
+  }
+  @keyframes cup-spin-drift-reverse {
+    from { rotate:  10deg; }
+    to   { rotate: -10deg; }
+  }
+
+  /* ── Parallax-demo flavor ────────────────────
+     The hero's three cups move at different speeds as you
+     scroll the hero, giving a multi-layer depth feel.
+     The hero "sunset" radial gradient drifts as you scroll. */
+
+  .cup--hero, .cup--mid, .cup--bg {
+    animation-composition: add;
+  }
+  .cup--hero {
+    animation:
+      float-cup 6.5s ease-in-out infinite,
+      cup-parallax-front linear;
+    animation-timeline: auto, view(block 0% 0%);
+    animation-range: auto, cover 0% cover 100%;
+  }
+  .cup--mid {
+    animation:
+      float-cup 7s ease-in-out infinite,
+      cup-parallax-mid linear;
+    animation-timeline: auto, view(block 0% 0%);
+    animation-range: auto, cover 0% cover 100%;
+    animation-delay: .8s, 0s;
+  }
+  .cup--bg {
+    animation:
+      float-cup 8s ease-in-out infinite,
+      cup-parallax-back linear;
+    animation-timeline: auto, view(block 0% 0%);
+    animation-range: auto, cover 0% cover 100%;
+    animation-delay: 1.6s, 0s;
+  }
+  @keyframes cup-parallax-front { from { translate: 0 -70px; } to { translate: 0 70px; } }
+  @keyframes cup-parallax-mid   { from { translate: 0 -50px; } to { translate: 0 50px; } }
+  @keyframes cup-parallax-back  { from { translate: 0 -30px; } to { translate: 0 30px; } }
+
+  /* Hero pane: the warm "sun" lowers as you scroll the hero,
+     emulating the sunset → twilight transition from the demo. */
+  .pane--top {
+    animation: hero-sunset linear;
+    animation-timeline: view(block 0% 0%);
+    animation-range: cover 0% cover 100%;
+  }
+  @keyframes hero-sunset {
+    0%   { background:
+            radial-gradient(ellipse 70% 60% at 88% 12%, rgba(245, 197, 78, 0.32), transparent 60%),
+            radial-gradient(ellipse 60% 70% at 10% 100%, rgba(110, 35, 23, 0.30), transparent 55%),
+            #2f1c14; }
+    60%  { background:
+            radial-gradient(ellipse 70% 60% at 88% 45%, rgba(214, 123, 92, 0.24), transparent 60%),
+            radial-gradient(ellipse 60% 70% at 8% 100%, rgba(110, 35, 23, 0.34), transparent 55%),
+            #281710; }
+    100% { background:
+            radial-gradient(ellipse 70% 60% at 88% 85%, rgba(154, 70, 80, 0.18), transparent 60%),
+            radial-gradient(ellipse 60% 70% at 8% 100%, rgba(45, 18, 38, 0.45), transparent 55%),
+            #1c0f10; }
+  }
+
+  /* Page background — soft luminous aurora. Two glow halos (warm
+     top-right, cool bottom-left) over a base tone, all of which
+     smoothly interpolate as you scroll. @property makes the custom
+     properties color-typed so the transitions tween instead of
+     stepping. background-attachment: fixed pins the halos to the
+     viewport so they feel like an ambient light, not a backdrop
+     that scrolls with content. */
+  body {
+    animation: page-bg-glow linear;
+    animation-timeline: scroll(root);
+    animation-range: 0% 100%;
+  }
+  @keyframes page-bg-glow {
+    0%   { --bg-base: #15100C;
+           --glow-warm: rgba(228, 122, 53, 0.18);
+           --glow-cool: rgba(110, 35, 23, 0.30); }
+    14%  { --bg-base: #15100C;
+           --glow-warm: rgba(228, 122, 53, 0.18);
+           --glow-cool: rgba(110, 35, 23, 0.30); }
+    25%  { --bg-base: #2A1D12;
+           --glow-warm: rgba(245, 197, 78, 0.22);
+           --glow-cool: rgba(155, 80, 35, 0.30); }
+    35%  { --bg-base: #3A2818;
+           --glow-warm: rgba(255, 215, 130, 0.24);
+           --glow-cool: rgba(184, 120, 60, 0.28); }
+    47%  { --bg-base: #2A1410;
+           --glow-warm: rgba(214, 90, 92, 0.24);
+           --glow-cool: rgba(110, 25, 30, 0.36); }
+    60%  { --bg-base: #3A2818;
+           --glow-warm: rgba(255, 215, 130, 0.22);
+           --glow-cool: rgba(184, 120, 60, 0.28); }
+    72%  { --bg-base: #3A2818;
+           --glow-warm: rgba(255, 215, 130, 0.22);
+           --glow-cool: rgba(184, 120, 60, 0.28); }
+    82%  { --bg-base: #2A1410;
+           --glow-warm: rgba(214, 90, 92, 0.24);
+           --glow-cool: rgba(110, 25, 30, 0.36); }
+    94%  { --bg-base: #15100C;
+           --glow-warm: rgba(228, 122, 53, 0.18);
+           --glow-cool: rgba(110, 35, 23, 0.30); }
+    100% { --bg-base: #15100C;
+           --glow-warm: rgba(228, 122, 53, 0.18);
+           --glow-cool: rgba(110, 35, 23, 0.30); }
+  }
+
+  /* Starfield that fades in inside the dark Story / Visit cards
+     as they scroll into view — like the demo's stars appearing
+     when the sky turns to night. */
+  .card--red {
+    --star-fade: 0;
+  }
+  .card--red::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1.2px 1.2px at 12% 18%, rgba(255, 248, 220, 0.9), transparent 60%),
+      radial-gradient(1px 1px at 28% 32%, rgba(255, 248, 220, 0.7), transparent 60%),
+      radial-gradient(1.4px 1.4px at 44% 14%, rgba(255, 248, 220, 0.9), transparent 60%),
+      radial-gradient(1px 1px at 62% 26%, rgba(255, 248, 220, 0.6), transparent 60%),
+      radial-gradient(1.6px 1.6px at 78% 12%, rgba(255, 248, 220, 0.95), transparent 60%),
+      radial-gradient(1px 1px at 88% 36%, rgba(255, 248, 220, 0.7), transparent 60%),
+      radial-gradient(1.2px 1.2px at 18% 52%, rgba(255, 248, 220, 0.8), transparent 60%),
+      radial-gradient(1px 1px at 36% 62%, rgba(255, 248, 220, 0.6), transparent 60%),
+      radial-gradient(1.4px 1.4px at 70% 58%, rgba(255, 248, 220, 0.85), transparent 60%),
+      radial-gradient(1px 1px at 92% 70%, rgba(255, 248, 220, 0.7), transparent 60%);
+    opacity: 0;
+    animation: starfield-fade linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 50%;
+  }
+  @keyframes starfield-fade {
+    0%   { opacity: 0; }
+    100% { opacity: 0.85; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @supports (animation-timeline: view()) {
+    .card:not(.card--hero),
+    .prod, .polaroid, .stat, .menu-page,
+    .story-card__cup, .visit__cup {
+      animation: none;
+    }
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Glowing champagne stripe — a slow diagonal light
+   that drifts INSIDE each card, behind the text/content
+   layer. Very subtle; reads as ambient lighting rather
+   than an obvious effect. Pointer events disabled.
+   ────────────────────────────────────────────── */
+
+@keyframes card-stripe-drift {
+  0%   { background-position: 140% 0; }
+  100% { background-position: -140% 0; }
+}
+
+/* Hero — ::after sits above the colored panes (z-index 0–1)
+   but below .card-content (z-index 3) and .cup (z-index 5),
+   so the beam passes behind the headline and the cups. */
+.card--hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image: linear-gradient(
+    115deg,
+    transparent 42%,
+    rgba(255, 240, 200, 0.06) 49%,
+    rgba(255, 250, 230, 0.14) 50%,
+    rgba(255, 240, 200, 0.06) 51%,
+    transparent 58%
+  );
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 140% 0;
+  animation: card-stripe-drift 30s linear infinite;
+}
+
+/* Non-hero cards — ::before with z-index: -1 inside the
+   card's isolated stacking context renders above the card's
+   own background but BELOW static DOM children. So content
+   sits on top of the stripe naturally. */
+.card--cream::before,
+.card--red::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: linear-gradient(
+    115deg,
+    transparent 42%,
+    rgba(255, 240, 200, 0.07) 49%,
+    rgba(255, 250, 230, 0.16) 50%,
+    rgba(255, 240, 200, 0.07) 51%,
+    transparent 58%
+  );
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 140% 0;
+  animation: card-stripe-drift 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card--hero::after,
+  .card--cream::before,
+  .card--red::before { animation: none; background-position: 50% 0; }
+}
+
+/* ──────────────────────────────────────────────
+   MOBILE — phone-first overrides. Stack everything,
+   shrink the hero, simplify the polaroid wall,
+   collapse the menu gallery, hide the nav links
+   (icon row stays), and right-size all clamps that
+   were tuned for desktop.
+   ────────────────────────────────────────────── */
+
+@media (max-width: 760px) {
+  .page {
+    gap: 10px;
+    padding: 10px;
+    max-width: 100%;
+  }
+
+  /* Hero — keep the same desktop composition (dark warm top pane,
+     cream pane bottom, cups floating on the seam) just at a
+     mobile-friendly scale. Force a tall enough min-height so the
+     proof+carousel sit on the cream zone and the cups have room. */
+  .card--hero {
+    aspect-ratio: auto;
+    min-height: 760px;
+  }
+  .card-content {
+    padding: 18px 20px 56px;
+    gap: 18px;
+  }
+
+  .nav {
+    padding-bottom: 0;
+    border-bottom: 0;
+    gap: 12px;
+    flex-wrap: nowrap;
+  }
+  .nav-links { display: none; }
+  .logo { gap: 10px; min-width: 0; }
+  .logo__img { width: 44px; height: 44px; }
+  .logo__word { font-size: 19px; }
+  .logo__word small { font-size: 9px; letter-spacing: 0.18em; margin-top: 2px; }
+
+  .icon-btn { width: 38px; height: 38px; flex-shrink: 0; }
+  .icon-btn svg { width: 14px; height: 14px; }
+
+  .hero {
+    display: block;
+    padding-top: 8px;
+  }
+  .hero__copy { color: var(--cream); max-width: 100%; }
+  .hero__eyebrow { font-size: 10px; margin-bottom: 14px; }
+  .hero__title {
+    font-size: clamp(40px, 11.5vw, 60px);
+    line-height: 1.0;
+    margin-bottom: 16px;
+  }
+  .hero__sub {
+    font-size: 14px;
+    max-width: none;
+    margin-bottom: 22px;
+  }
+
+  /* Cups + straws keep their absolute positioning over the hero card.
+     Reset the desktop right/bottom values and rescale for narrow widths. */
+  .cup, .straw {
+    position: absolute;
+    display: block;
+  }
+  .cup--hero {
+    width: 44%; max-width: 190px;
+    right: 30%;
+    left: auto;
+    bottom: 26%;
+    animation-name: float-cup;
+  }
+  .cup--mid {
+    width: 24%; max-width: 100px;
+    right: 5%;
+    bottom: 32%;
+  }
+  .cup--bg {
+    width: 12%; max-width: 52px;
+    right: 1%;
+    bottom: 42%;
+  }
+  .straw--1 { right: 64%; bottom: 30%; width: 7%; max-width: 36px; }
+  .straw--2 { right: 24%; bottom: 22%; width: 8%; max-width: 42px; }
+
+  /* Carousel only — the proof row reads scuffed on narrow widths, hide it */
+  .card-foot {
+    grid-template-columns: 1fr;
+    row-gap: 14px;
+    padding-top: 8px;
+  }
+  .proof { display: none; }
+  .carousel-controls { justify-self: center; }
+
+  .cta { padding: 12px 22px; font-size: 11px; letter-spacing: 0.18em; }
+  .cta--big { padding: 14px 26px; font-size: 11px; }
+
+  /* Ticker — quieter */
+  .ticker { padding: 10px 0; }
+  .ticker__track { gap: 1.6rem; font-size: 13px; }
+
+  /* Section heads — tighter padding */
+  .section-head {
+    padding: 40px 22px 0;
+    max-width: 100%;
+  }
+  .section-head--center { max-width: 100%; }
+  .kicker { font-size: 10px; letter-spacing: 0.22em; gap: 10px; }
+  .kicker::before, .kicker::after { width: 18px; }
+  .section-title { font-size: clamp(28px, 8vw, 40px); }
+
+  /* Klassiker — single column on phones */
+  .prod-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 28px 22px 36px;
+  }
+  .prod__media { height: 200px; }
+  .prod__name { font-size: 18px; }
+  .prod__desc { min-height: 0; }
+  #klassiker { padding-bottom: 36px; }
+
+  /* Speisekarte — single column of menu pages */
+  .menu-gallery {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0 4px;
+  }
+  .menu-gallery > li > button,
+  .menu-gallery > li.menu-gallery__wide > button { grid-column: span 1; }
+  .menu-gallery > li.menu-gallery__wide > button { aspect-ratio: 3/2; }
+  .menu-foot { padding: 16px 18px; font-size: 12px; }
+  .menu-intro { font-size: 14px; padding: 0 16px; }
+
+  /* Lightbox controls — tap-target friendly */
+  .lightbox__close { top: 14px; right: 14px; width: 48px; height: 48px; }
+  .lightbox__nav { width: 56px; height: 56px; bottom: 16px; }
+  .lightbox__nav--prev { left: 12px; }
+  .lightbox__nav--next { left: auto; right: 12px; }
+  .lightbox__counter { bottom: 84px; left: 50%; padding: 8px 14px; font-size: 14px; }
+
+  /* Story / Visit — stack copy + art */
+  .story-card {
+    grid-template-columns: 1fr;
+    padding: 48px 22px;
+    gap: 24px;
+  }
+  .story-card__copy { max-width: none; }
+  .story-card__body { font-size: 16px; margin: 14px 0 22px; }
+  .story-card__art { height: 200px; }
+  .story-card__cup { max-width: 160px; }
+
+  .visit {
+    grid-template-columns: 1fr;
+    padding: 48px 22px;
+    gap: 24px;
+    text-align: center;
+  }
+  .visit__copy { max-width: none; margin: 0 auto; }
+  .visit__lead { font-size: 18px; }
+  .visit__cup { max-width: 160px; }
+  .visit__cta-row { justify-content: center; gap: 14px; }
+
+  /* Galerie — 2 columns of frames; smaller padding */
+  .gallery-card {
+    padding: 48px 16px 56px;
+  }
+  .polaroid-wall {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 28px;
+  }
+  .polaroid { padding: 10px 10px 42px; }
+  .polaroid figcaption { font-size: 14px; bottom: 12px; }
+  .polaroid figcaption::before { width: 16px; margin-bottom: 8px; }
+  .gallery-card__foot { font-size: 14px; margin-top: 28px; }
+
+  /* Zahlen — 2x2 grid */
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 24px 16px 0;
+  }
+  .stat { padding: 18px 12px; }
+  .stat__num { font-size: clamp(36px, 12vw, 52px); }
+  .stat__lbl { font-size: 11px; }
+
+  /* Footer — compact stack */
+  .foot {
+    padding: 36px 22px 24px;
+  }
+  .foot__brand {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    padding-bottom: 22px;
+  }
+  .foot__tag { font-size: 11px; }
+  .foot__cols {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 22px 0;
+  }
+  .foot__cols p { font-size: 13px; }
+  .foot__copy { font-size: 11px; margin-top: 18px; }
+}
+
+@media (max-width: 420px) {
+  .hero__title { font-size: clamp(34px, 11vw, 44px); }
+  .nav-actions { display: flex; }
+  .foot__cols { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bar Gelateria Venezia · Echtes italienisches Gelato in Achern seit 1953</title>
+  <meta name="description" content="Hausgemachtes italienisches Gelato, Eisbecher, Espresso und Spaghetti-Eis. Kapellenstraße 1, 77855 Achern. Täglich geöffnet 10:00 – 21:00." />
+  <meta name="theme-color" content="#6E2317" />
+
+  <!-- Lokale Google Fonts — DSGVO-konform, keine Verbindung zu Google-Servern -->
+  <link rel="stylesheet" href="css/fonts.css?v=1" />
+
+  <link rel="stylesheet" href="css/style.css?v=60" />
+
+  <!-- Preload the hero cup + first floater so they paint with the first frame. -->
+  <link rel="preload" as="image" href="assets/images/cup-strawberry.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/images/strawberry.webp" />
+  <link rel="icon" type="image/png" href="Logo/logo-venezia-round.png" />
+
+  <!-- Mark JS active so CSS can gate the entrance animations. Inline so it
+       runs before first paint and there's no flash of un-animated content. -->
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <main class="page">
+
+    <!-- ─────────── HERO CARD ─────────── -->
+    <article class="card card--hero" aria-label="Venezia ice cream hero">
+      <div class="pane pane--top"></div>
+      <div class="pane pane--bottom"></div>
+      <svg class="card-wave" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,140 C 180,40 360,30 540,90 C 760,170 960,230 1160,230 C 1300,230 1380,220 1440,210 L 1440,300 L 0,300 Z" fill="#FFF8DC"/>
+      </svg>
+
+      <div class="card-content">
+        <nav class="nav" aria-label="Primary">
+          <a class="logo" href="#top" aria-label="Venezia Gelato — Startseite">
+            <img class="logo__img" src="Logo/logo-venezia-round.png" alt="" />
+            <span class="logo__word">Venezia<small>gelato · seit 1953</small></span>
+          </a>
+
+          <ul class="nav-links" role="list">
+            <li><a href="#speisekarte" class="nav-link nav-link--active" aria-current="page">Speisekarte</a></li>
+            <li><a href="#story" class="nav-link">Story</a></li>
+            <li><a href="#zahlen" class="nav-link">Achern liebt uns</a></li>
+            <li><a href="#besuch" class="nav-link">Besuch</a></li>
+          </ul>
+
+          <div class="nav-actions">
+            <a href="tel:+4978416731596" class="icon-btn" aria-label="Venezia anrufen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/>
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/gelateria_venezia_achern/" target="_blank" rel="noopener" class="icon-btn" aria-label="Venezia auf Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5"/>
+                <circle cx="12" cy="12" r="3.5"/>
+                <circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/>
+              </svg>
+            </a>
+          </div>
+        </nav>
+
+        <section class="hero" id="top">
+          <div class="hero__copy">
+            <p class="hero__eyebrow">Bar Gelateria · Achern</p>
+            <h1 class="hero__title">Echtes <br/><span class="hero__accent">Gelato</span> <br/>seit 1953.</h1>
+            <p class="hero__sub">Hausgemacht.<br/>Im Herzen von Achern.</p>
+            <a class="cta" href="#speisekarte"><span>Speisekarte ansehen</span></a>
+          </div>
+
+        </section>
+
+        <section class="card-foot">
+          <div class="proof">
+            <span class="proof__avatar" aria-hidden="true">
+              <svg viewBox="0 0 40 40">
+                <defs>
+                  <linearGradient id="avatarG" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="#E69C81"/>
+                    <stop offset="1" stop-color="#6E2317"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="20" cy="20" r="20" fill="url(#avatarG)"/>
+                <circle cx="20" cy="16" r="6" fill="#FFF8DC"/>
+                <path d="M8 36 C 10 26 30 26 32 36 Z" fill="#FFF8DC"/>
+              </svg>
+            </span>
+            <div class="proof__text">
+              <p class="proof__top">4,8 ★ · 172 Bewertungen</p>
+              <p class="proof__bot">Beste Eisdiele im <span>Ortenaukreis</span>.</p>
+              <a class="proof__link" href="#zahlen" aria-label="Mehr über uns">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="carousel-controls">
+            <button class="round-btn" aria-label="Vorherige Sorte">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <div class="dots" role="tablist" aria-label="Sorten-Slides">
+              <button class="dot dot--active" role="tab" aria-selected="true" aria-label="Erdbeere"></button>
+              <button class="dot" role="tab" aria-selected="false" aria-label="Zitrone"></button>
+              <button class="dot" role="tab" aria-selected="false" aria-label="Pistazie"></button>
+            </div>
+            <button class="round-btn" aria-label="Nächste Sorte">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <img class="cup cup--bg"   id="cup-bg"   src="assets/images/cup-pistachio.webp"  alt="Pistazie Gelato (Hintergrund)" />
+      <img class="cup cup--mid"  id="cup-mid"  src="assets/images/cup-lemon.webp"      alt="Zitrone Gelato (Mitte)" />
+      <img class="cup cup--hero" id="cup-hero" src="assets/images/cup-strawberry.webp" alt="Erdbeer Sorbet (Hauptmotiv)" fetchpriority="high" decoding="async" />
+
+      <img class="straw straw--1" id="floater-1" src="assets/images/strawberry.webp" alt="" aria-hidden="true" />
+      <img class="straw straw--2" id="floater-2" src="assets/images/strawberry.webp" alt="" aria-hidden="true" />
+    </article>
+
+    <!-- ─────────── TICKER ─────────── -->
+    <div class="ticker" aria-label="Unsere Spezialitäten">
+      <div class="ticker__track">
+        <span>★ Gelato</span><span>★ Eisbecher</span><span>★ Espresso</span><span>★ Spaghetti-Eis</span><span>★ Affogato</span><span>★ Caffè Latte</span><span>★ Tiramisù</span>
+        <span>★ Gelato</span><span>★ Eisbecher</span><span>★ Espresso</span><span>★ Spaghetti-Eis</span><span>★ Affogato</span><span>★ Caffè Latte</span><span>★ Tiramisù</span>
+      </div>
+    </div>
+
+    <!-- ─────────── KLASSIKER ─────────── -->
+    <section class="card card--cream" id="klassiker">
+      <header class="section-head reveal reveal--up">
+        <p class="kicker">Unsere Klassiker</p>
+        <h2 class="section-title">Vier Bestseller, die du <span class="section-title__accent">probiert</span> haben musst.</h2>
+      </header>
+
+      <ul class="prod-grid reveal reveal--stagger" role="list">
+        <li class="prod">
+          <div class="prod__media prod__media--cream-warm">
+            <img src="assets/images/spaghetti-eis.webp" alt="Spaghetti-Eis Klassiker" />
+          </div>
+          <div class="prod__meta">
+            <h3 class="prod__name">Spaghetti Erdbeere</h3>
+            <p class="prod__desc">Vanilleeis durch die Presse, Erdbeersauce, weiße Schokoraspel.</p>
+            <div class="prod__row">
+              <span class="prod__price">ab 8,20 €</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="prod">
+          <div class="prod__media prod__media--pink">
+            <img src="assets/images/bella-italia.webp" alt="Bella Italia Eisbecher" />
+          </div>
+          <div class="prod__meta">
+            <h3 class="prod__name">Bella Italia</h3>
+            <p class="prod__desc">Gem. Eis, Sahne, frische Erdbeeren, Kiwischeiben, Soßen.</p>
+            <div class="prod__row">
+              <span class="prod__price">ab 9,50 €</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="prod">
+          <div class="prod__media prod__media--brown">
+            <img src="assets/images/schwarzwald-becher.webp" alt="Schwarzwald Becher" />
+          </div>
+          <div class="prod__meta">
+            <h3 class="prod__name">Schwarzwald Becher</h3>
+            <p class="prod__desc">Schattenmorellen, Schokoraspel, Sahne, Kirschwasser.</p>
+            <div class="prod__row">
+              <span class="prod__price">ab 9,20 €</span>
+            </div>
+          </div>
+        </li>
+
+        <li class="prod prod--feature">
+          <div class="prod__media prod__media--green">
+            <img src="assets/images/pistazien-becher.webp" alt="Pistazien Becher — unsere Signature" />
+          </div>
+          <div class="prod__meta">
+            <h3 class="prod__name">Pistazien Becher <span class="prod__tag">Signature</span></h3>
+            <p class="prod__desc">Sizilianische Pistazienkerne, hausgemachte Pistaziensoße, Sahne.</p>
+            <div class="prod__row">
+              <span class="prod__price">ab 13,50 €</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ─────────── SPEISEKARTE (PDF-Galerie) ─────────── -->
+    <section class="card card--cream speisekarte" id="speisekarte">
+      <header class="section-head section-head--center reveal reveal--up">
+        <p class="kicker">Unsere Speisekarte</p>
+        <h2 class="section-title">Original-Karte aus der <span class="section-title__accent">Vitrine</span>.</h2>
+        <p class="menu-intro">Tippe auf eine Seite, um sie groß zu sehen. Eissorten passen wir saisonal an &mdash; frag uns vor Ort nach den heutigen Sorten.</p>
+      </header>
+
+      <ul class="menu-gallery reveal reveal--up" role="list">
+        <li><button class="menu-page" type="button" data-page="1"  aria-label="Seite 1 vergrößern">
+          <img src="assets/menu/page-01-thumb.jpg" alt="Cover" loading="lazy" width="675" height="900" />
+          <span class="menu-page__num">01</span>
+        </button></li>
+        <li class="menu-gallery__wide"><button class="menu-page" type="button" data-page="2" aria-label="Seite 2 vergrößern">
+          <img src="assets/menu/page-02-thumb.jpg" alt="Eissorten &amp; Für Kinder" loading="lazy" width="900" height="600" />
+          <span class="menu-page__num">02</span>
+        </button></li>
+        <li class="menu-gallery__wide"><button class="menu-page" type="button" data-page="3" aria-label="Seite 3 vergrößern">
+          <img src="assets/menu/page-03-thumb.jpg" alt="Frisch &amp; Fruchtig" loading="lazy" width="900" height="600" />
+          <span class="menu-page__num">03</span>
+        </button></li>
+        <li class="menu-gallery__wide"><button class="menu-page" type="button" data-page="4" aria-label="Seite 4 vergrößern">
+          <img src="assets/menu/page-04-thumb.jpg" alt="Süß &amp; Nussig" loading="lazy" width="900" height="600" />
+          <span class="menu-page__num">04</span>
+        </button></li>
+        <li class="menu-gallery__wide"><button class="menu-page" type="button" data-page="5" aria-label="Seite 5 vergrößern">
+          <img src="assets/menu/page-05-thumb.jpg" alt="Beerenstark &amp; Pralinen" loading="lazy" width="900" height="600" />
+          <span class="menu-page__num">05</span>
+        </button></li>
+        <li class="menu-gallery__wide"><button class="menu-page" type="button" data-page="6" aria-label="Seite 6 vergrößern">
+          <img src="assets/menu/page-06-thumb.jpg" alt="Mit Schuss" loading="lazy" width="900" height="600" />
+          <span class="menu-page__num">06</span>
+        </button></li>
+        <li class="menu-gallery__wide"><button class="menu-page" type="button" data-page="7" aria-label="Seite 7 vergrößern">
+          <img src="assets/menu/page-07-thumb.jpg" alt="Joghurteria" loading="lazy" width="900" height="600" />
+          <span class="menu-page__num">07</span>
+        </button></li>
+        <li class="menu-gallery__wide"><button class="menu-page" type="button" data-page="8" aria-label="Seite 8 vergrößern">
+          <img src="assets/menu/page-08-thumb.jpg" alt="Spaghettimania" loading="lazy" width="900" height="600" />
+          <span class="menu-page__num">08</span>
+        </button></li>
+        <li class="menu-gallery__wide"><button class="menu-page" type="button" data-page="9" aria-label="Seite 9 vergrößern">
+          <img src="assets/menu/page-09-thumb.jpg" alt="Coole Drinks" loading="lazy" width="900" height="600" />
+          <span class="menu-page__num">09</span>
+        </button></li>
+        <li class="menu-gallery__wide"><button class="menu-page" type="button" data-page="10" aria-label="Seite 10 vergrößern">
+          <img src="assets/menu/page-10-thumb.jpg" alt="Kaffee &amp; Bar" loading="lazy" width="900" height="600" />
+          <span class="menu-page__num">10</span>
+        </button></li>
+        <li><button class="menu-page" type="button" data-page="11" aria-label="Seite 11 vergrößern">
+          <img src="assets/menu/page-11-thumb.jpg" alt="Über uns &amp; Geschichte" loading="lazy" width="675" height="900" />
+          <span class="menu-page__num">11</span>
+        </button></li>
+      </ul>
+
+      <p class="menu-foot">11 Seiten &middot; Eisbecher, Spaghetti-Eis, Joghurteria, Kaffee &amp; Bar. Auf Wunsch erhältst du Einblick in unsere Zusatzstoff- und Allergenliste &mdash; sie liegt am Tresen für dich bereit.</p>
+    </section>
+
+    <!-- Lightbox dialog for full-size menu pages -->
+    <dialog id="menu-lightbox" class="lightbox" aria-label="Speisekarte vergrößert">
+      <button class="lightbox__close" type="button" aria-label="Schließen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6l-6 12"/></svg>
+      </button>
+      <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Vorherige Seite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <figure class="lightbox__stage">
+        <img class="lightbox__img" src="" alt="" />
+        <figcaption class="lightbox__counter"><span class="lightbox__current">1</span> / <span class="lightbox__total">11</span></figcaption>
+      </figure>
+      <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Nächste Seite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </dialog>
+
+
+    <!-- ─────────── STORY ─────────── -->
+    <section class="card card--red story-card" id="story">
+      <div class="story-card__copy reveal reveal--left">
+        <p class="kicker kicker--light">Unsere Geschichte</p>
+        <h2 class="section-title section-title--light">
+          <span class="section-title__accent">Leidenschaft</span> seit 1953.
+        </h2>
+        <p class="story-card__body">
+          Seit 1953 wird an der Kapellenstraße echtes italienisches Gelato am Hause gemacht. Drei Generationen, ein Rezept, eine Mission: kleine süße Momente für Achern. Gemischt mit echten Früchten, von Hand gerührt – geschlossen wird erst, wenn die letzte Sorte aus ist.
+        </p>
+        <a class="cta cta--light" href="#besuch"><span>Komm vorbei</span></a>
+      </div>
+      <div class="story-card__art reveal reveal--right" aria-hidden="true">
+        <img src="assets/images/cup-pistachio.webp" alt="" class="story-card__cup" />
+        <img src="assets/images/strawberry.webp"   alt="" class="story-card__berry" />
+      </div>
+    </section>
+
+    <!-- ─────────── GALERIE (polaroid wall) ─────────── -->
+    <section class="card card--cream gallery-card" id="galerie" aria-label="Polaroid-Galerie">
+      <header class="section-head section-head--center reveal reveal--up">
+        <p class="kicker">Aus unserer Vitrine</p>
+        <h2 class="section-title">Kleine <span class="section-title__accent">Momente</span> zum Festhalten.</h2>
+      </header>
+
+      <div class="polaroid-wall" aria-hidden="true">
+        <!-- Tape strip pinned at top -->
+        <span class="polaroid-wall__tape polaroid-wall__tape--1"></span>
+        <span class="polaroid-wall__tape polaroid-wall__tape--2"></span>
+
+        <figure class="polaroid polaroid--1">
+          <img src="assets/gallery/eisbecher-vitrine.webp" alt="Eisbecher vor der Vitrine" loading="lazy" />
+          <figcaption>Aus unserer Vitrine</figcaption>
+        </figure>
+        <figure class="polaroid polaroid--3">
+          <img src="assets/gallery/kugel-tripple.webp" alt="Hörnchen mit drei Kugeln" loading="lazy" />
+          <figcaption>Drei Kugeln · ein Sommer</figcaption>
+        </figure>
+        <figure class="polaroid polaroid--4">
+          <img src="assets/gallery/spaghetti-eis.webp" alt="Spaghetti-Eis Klassiker" loading="lazy" />
+          <figcaption>Spaghetti-Eis · Klassiker</figcaption>
+        </figure>
+        <figure class="polaroid polaroid--5">
+          <img src="assets/gallery/pizza-eis.webp" alt="Eisbecher mit frischen Beeren" loading="lazy" />
+          <figcaption>Bella Italia · in der Sonne</figcaption>
+        </figure>
+        <figure class="polaroid polaroid--6">
+          <img src="assets/gallery/schoko-becher.webp" alt="Schokoladen-Eisbecher" loading="lazy" />
+          <figcaption>Schoko-Liebe</figcaption>
+        </figure>
+      </div>
+
+      <p class="gallery-card__foot">Klicke ein Foto an &mdash; es richtet sich auf.</p>
+    </section>
+
+    <!-- ─────────── ZAHLEN / NUMBERS ─────────── -->
+    <section class="card card--cream zahlen" id="zahlen">
+      <header class="section-head section-head--center reveal reveal--up">
+        <p class="kicker">Achern liebt uns</p>
+        <h2 class="section-title">Zahlen, die wir gerne <span class="section-title__accent">teilen</span>.</h2>
+      </header>
+
+      <ul class="stat-grid reveal reveal--stagger" role="list">
+        <li class="stat">
+          <span class="stat__num">70</span>
+          <span class="stat__lbl">Jahre an der Kapellenstraße</span>
+        </li>
+        <li class="stat">
+          <span class="stat__num">4,8<small>★</small></span>
+          <span class="stat__lbl">auf Google</span>
+        </li>
+        <li class="stat">
+          <span class="stat__num">172</span>
+          <span class="stat__lbl">Bewertungen</span>
+        </li>
+        <li class="stat">
+          <span class="stat__num">100%</span>
+          <span class="stat__lbl">täglich frisch gemacht</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ─────────── VISIT ─────────── -->
+    <section class="card card--red visit" id="besuch">
+      <div class="visit__copy reveal reveal--left">
+        <p class="kicker kicker--light">Besuch uns</p>
+        <h2 class="section-title section-title--light">
+          Auf einen <span class="section-title__accent">Löffel?</span>
+        </h2>
+        <p class="visit__lead">Kapellenstraße 1 · 77855 Achern</p>
+        <p class="visit__lead visit__lead--dim">Täglich geöffnet · 10:00 – 21:00 Uhr</p>
+        <div class="visit__cta-row">
+          <a class="cta cta--light cta--big" href="https://www.google.com/maps/search/?api=1&query=Bar+Gelateria+Venezia+Kapellenstra%C3%9Fe+1+Achern" target="_blank" rel="noopener">
+            <span>In Google Maps öffnen</span>
+          </a>
+          <a class="cta-link" href="tel:+4978416731596">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/>
+            </svg>
+            <span>07841 67 31 596</span>
+          </a>
+        </div>
+      </div>
+      <img class="visit__cup reveal reveal--right" src="assets/images/cup-strawberry.webp" alt="" aria-hidden="true" />
+    </section>
+
+    <!-- ─────────── FOOTER ─────────── -->
+    <footer class="foot">
+      <div class="foot__brand">
+        <a class="logo logo--dark" href="#top">
+          <img class="logo__img logo__img--lg" src="Logo/logo-venezia-round.png" alt="" />
+          <span class="logo__word">Venezia<small>gelato · seit 1953</small></span>
+        </a>
+        <p class="foot__tag">Bar Gelateria Venezia · Inh. Onur Özmen · Kapellenstraße 1, Achern</p>
+      </div>
+
+      <ul class="foot__cols" role="list">
+        <li>
+          <h5>Adresse</h5>
+          <p>Kapellenstraße 1<br/>77855 Achern</p>
+        </li>
+        <li>
+          <h5>Öffnungszeiten</h5>
+          <p>Mo–So<br/>10:00 – 21:00 Uhr</p>
+        </li>
+        <li>
+          <h5>Kontakt</h5>
+          <p><a href="tel:+4978416731596">07841 67 31 596</a></p>
+        </li>
+        <li>
+          <h5>Folge uns</h5>
+          <p><a href="https://www.instagram.com/gelateria_venezia_achern/" target="_blank" rel="noopener">Instagram</a></p>
+        </li>
+      </ul>
+
+      <p class="foot__copy">© <span id="year"></span> Bar Gelateria Venezia · Achern · Mit ♥ und Gelato gemacht. · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></p>
+    </footer>
+
+  </main>
+
+  <script src="js/main.js?v=6" defer></script>
+</body>
+</html>

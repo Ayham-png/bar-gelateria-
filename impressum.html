@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impressum · Bar Gelateria Venezia Achern</title>
+  <meta name="description" content="Impressum der Bar Gelateria Venezia, Inh. Onur Özmen, Kapellenstraße 1, 77855 Achern." />
+  <meta name="robots" content="noindex, follow" />
+  <meta name="theme-color" content="#6E2317" />
+
+  <!-- Lokale Google Fonts — DSGVO-konform, keine Verbindung zu Google-Servern -->
+  <link rel="stylesheet" href="css/fonts.css?v=1" />
+
+  <link rel="stylesheet" href="css/style.css?v=60" />
+  <link rel="icon" type="image/png" href="Logo/logo-venezia-round.png" />
+
+  <style>
+    /* ─────────── Legal / Impressum page ─────────── */
+    .legal-page {
+      min-height: 100vh;
+      background: var(--pink);
+      padding: clamp(20px, 5vw, 56px) clamp(14px, 4vw, 32px) 0;
+    }
+    .legal-bar {
+      max-width: 880px;
+      margin: 0 auto clamp(18px, 3vw, 28px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .legal-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 9px 16px;
+      border: 1px solid rgba(246,236,207,.28);
+      border-radius: var(--r-pill);
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .legal-back:hover { background: rgba(246,236,207,.10); border-color: rgba(246,236,207,.5); }
+
+    .legal {
+      max-width: 880px;
+      margin: 0 auto;
+      background: var(--cream);
+      color: var(--ink);
+      border-radius: 16px;
+      padding: clamp(26px, 5vw, 64px);
+      box-shadow: 0 24px 60px rgba(0,0,0,.35);
+    }
+    .legal h1 {
+      font-family: var(--font-d);
+      font-weight: 700;
+      font-size: clamp(30px, 5vw, 46px);
+      line-height: 1.08;
+      color: var(--red);
+      margin: 0 0 clamp(24px, 4vw, 36px);
+    }
+    .legal h2 {
+      font-family: var(--font-d);
+      font-weight: 600;
+      font-size: clamp(20px, 2.6vw, 26px);
+      color: var(--red);
+      margin: clamp(30px, 5vw, 42px) 0 12px;
+      padding-top: clamp(20px, 4vw, 28px);
+      border-top: 1px solid rgba(110,35,23,.16);
+    }
+    .legal p {
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: var(--ink-soft);
+      margin: 0 0 14px;
+    }
+    .legal a { color: var(--red); text-decoration: underline; text-underline-offset: 2px; }
+    .legal a:hover { color: var(--red-soft); }
+    .legal address {
+      font-style: normal;
+      line-height: 1.85;
+      font-size: 16.5px;
+      color: var(--ink);
+      margin: 0 0 14px;
+    }
+    .legal address strong { font-weight: 600; }
+  </style>
+</head>
+<body>
+  <main class="legal-page">
+    <div class="legal-bar">
+      <a class="logo logo--dark" href="index.html">
+        <img class="logo__img" src="Logo/logo-venezia-round.png" alt="" />
+        <span class="logo__word">Venezia<small>gelato · seit 1953</small></span>
+      </a>
+      <a class="legal-back" href="index.html">← Zurück zur Startseite</a>
+    </div>
+
+    <article class="legal">
+      <h1>Impressum</h1>
+
+      <address>
+        <strong>Onur Özmen</strong><br/>
+        Bar Gelateria Venezia<br/>
+        Kapellenstraße 1<br/>
+        77855 Achern
+      </address>
+
+      <h2>Kontakt</h2>
+      <p>
+        Telefon: <a href="tel:+4917683400980">017683400980</a><br/>
+        E-Mail: <a href="mailto:gelateria.venezia@gmx.de">gelateria.venezia@gmx.de</a>
+      </p>
+
+      <h2>Verbraucher­streit­beilegung / Universal­schlichtungsstelle</h2>
+      <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+    </article>
+  </main>
+
+  <footer class="foot">
+    <p class="foot__copy">© <span id="year"></span> Bar Gelateria Venezia · Achern · <a href="index.html">Startseite</a> · <a href="datenschutz.html">Datenschutz</a></p>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
